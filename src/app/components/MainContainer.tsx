@@ -12,7 +12,7 @@ import SearchContainer from '@/components/search/SearchContainer';
 import { useAppContext } from "@/context/context";
 const { MapContainer, TileLayer, useMap } = ReactLeaflet;
 
-function MainContainer({ children, className, width, height, ...rest }) {
+function MainContainer({ className, width, height, ...rest }: any) {
     const { searchInput } = useAppContext();
     const { countries, error, loading, fetchCountries, openSnackbar, setOpenSnackbar } = Countries();
 

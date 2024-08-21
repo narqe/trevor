@@ -1,10 +1,11 @@
 
 import { useState, useEffect } from 'react';
 import { useAppContext } from "@/context/context";
+import { Country }  from '@/models/Country';
 
 const Countries = () => {
-    const [countries, setCountries] = useState([]);
-    const [error, setError] = useState(null);
+    const [countries, setCountries] = useState<Country[]>([]);
+    const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const [ openSnackbar, setOpenSnackbar ] = useState(false);
 
@@ -19,7 +20,7 @@ const Countries = () => {
             setCountries(data);
         } catch (error) {
             setCountries([]);
-            setError(error.message);
+            setError(error as unknown as string);
             setOpenSnackbar(true);
         } finally {
             setLoading(false);

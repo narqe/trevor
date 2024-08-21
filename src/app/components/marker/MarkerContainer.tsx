@@ -1,10 +1,12 @@
 import React from 'react'
 import PopupContainer from '@/components/popup/PopupContainer';
 import { Marker } from 'react-leaflet';
+import L from 'leaflet';
+import { Country } from '@/models/Country';
 
 interface Props {
-    data: {},
-    lat?: number
+    data: Country,
+    lat?: number,
     lon?: number
 }
 
