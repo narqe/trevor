@@ -18,9 +18,11 @@ const Countries = () => {
             }
             const data = await response.json();
             setCountries(data);
-        } catch (error) {
+        } catch (error: unknown) {
             setCountries([]);
-            setError(error as unknown as string);
+            (error instanceof Error) 
+                ? setError(error.message) 
+                : setError('An unknown error occurred');
             setOpenSnackbar(true);
         } finally {
             setLoading(false);
