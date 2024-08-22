@@ -24,7 +24,7 @@ const Countries = () => {
             setCountries(data);
             if (!data.length) {
                 setOpenInfoSnackbar(true);
-                setInfo("There's no results for the filters you are appling, try with others please.");
+                setInfo("There are no results for the filters you are appling, try with others please.");
             }
         } catch (error: unknown) {
             setCountries([]);
