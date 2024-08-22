@@ -1,40 +1,51 @@
 
-import { useState, useEffect } from 'react';
-import { useAppContext } from "@/context/context";
+import { useState } from 'react';
 import { Country }  from '@/models/Country';
+import { IFilter } from '@/models/IFilter';
 
 const Countries = () => {
     const [countries, setCountries] = useState<Country[]>([]);
     const [error, setError] = useState('');
+    const [info, setInfo] = useState('');
     const [loading, setLoading] = useState(false);
-    const [ openSnackbar, setOpenSnackbar ] = useState(false);
+    const [ openErrorSnackbar, setOpenErrorSnackbar ] = useState(false);
+    const [ openInfoSnackbar, setOpenInfoSnackbar ] = useState(false);
 
-    async function fetchCountries(params?: string) {
+    async function fetchCountries(filterBy: IFilter, params?: string) {
+        setOpenErrorSnackbar(false);
+        setOpenInfoSnackbar(false);
         try {
             setLoading(true)
-            const response = await fetch(`/api/countries?name=${params || ''}`);
+            const response = await fetch(`/api/countries?filterBy=${filterBy.toLowerCase()}&value=${params}`);
             if (!response.ok) {
                 throw new Error('There was an error fetching the countries. Please reload and try again.');
             }
             const data = await response.json();
             setCountries(data);
+            if (!data.length) {
+                setOpenInfoSnackbar(true);
+                setInfo("There's no results for the filters you are appling, try with others please.");
+            }
         } catch (error: unknown) {
             setCountries([]);
             (error instanceof Error) 
                 ? setError(error.message) 
                 : setError('An unknown error occurred');
-            setOpenSnackbar(true);
+            setOpenErrorSnackbar(true);
         } finally {
             setLoading(false);
         }
     }
 
     return {
-        openSnackbar,
+        openErrorSnackbar,
+        openInfoSnackbar,
         countries,
         error,
+        info,
         loading,
-        setOpenSnackbar,
+        setOpenErrorSnackbar,
+        setOpenInfoSnackbar,
         fetchCountries,
     }
 

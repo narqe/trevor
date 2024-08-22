@@ -13,8 +13,18 @@ import { useAppContext } from "@/context/context";
 const { MapContainer, TileLayer, useMap } = ReactLeaflet;
 
 function MainContainer({ className, width, height, ...rest }: any) {
-    const { searchInput } = useAppContext();
-    const { countries, error, loading, fetchCountries, openSnackbar, setOpenSnackbar } = Countries();
+    const { searchInput, filter } = useAppContext();
+    const { 
+        countries, 
+        info, 
+        error, 
+        loading, 
+        fetchCountries, 
+        openErrorSnackbar, 
+        setOpenErrorSnackbar, 
+        openInfoSnackbar, 
+        setOpenInfoSnackbar 
+    } = Countries();
 
     let mapClassName = styles.map;
 
@@ -23,9 +33,9 @@ function MainContainer({ className, width, height, ...rest }: any) {
     }
 
     useEffect(() => {
-        fetchCountries(searchInput);
+        fetchCountries(filter, searchInput);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [searchInput]);
+    }, [searchInput, filter]);
 
     return (
         <Container sx={{ maxWidth: '1400px', mx: 'auto', my: 2, py: 2 }}>
@@ -55,7 +65,8 @@ function MainContainer({ className, width, height, ...rest }: any) {
                     )
                 })}
             </MapContainer>
-            <AlertSnackbar open={openSnackbar} message={error} onClose={() => setOpenSnackbar(false)} />
+            <AlertSnackbar open={openErrorSnackbar} message={error} severity="error" onClose={() => setOpenErrorSnackbar(false)} />
+            <AlertSnackbar open={openInfoSnackbar} message={info} severity="info" onClose={() => setOpenInfoSnackbar(false)} />
         </Container>
     )
 }

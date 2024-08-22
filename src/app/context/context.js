@@ -6,9 +6,10 @@ const AppContext = createContext();
 
 function AppProvider({ children }) {
     const [searchInput, setSearchInput ] = useState('');
+    const [filter, setFilter] = useState('name');
 
     return (
-        <AppContext.Provider value={{ searchInput, setSearchInput }}>
+        <AppContext.Provider value={{ searchInput, setSearchInput, filter, setFilter }}>
             {children}
         </AppContext.Provider>
     );
