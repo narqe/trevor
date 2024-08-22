@@ -13,6 +13,7 @@ import {
     ListItemText,
     ListItemAvatar,
     Avatar,
+    Box
 } from '@mui/material';
 import Link from 'next/link';
 import { Country } from '@/models/Country';
@@ -27,7 +28,9 @@ interface Props {
     data: Country
 }
 
-const PopupContainer = ({ data: { emoji, name, code, capital, currency, phone, awsRegion, languages }}: Props) => {
+const PopupContainer = ({ 
+    data: { emoji, name, code, capital, currency, phone, awsRegion, languages }
+} : Props) => {
     const data: DataList[] = [{
         label: 'Capital City',
         value: capital,
@@ -44,13 +47,13 @@ const PopupContainer = ({ data: { emoji, name, code, capital, currency, phone, a
         label: 'AWS Region',
         value: awsRegion,
         icon: <SouthAmericaIcon />
-    }]
+    }];
 
     return (
         <Popup keepInView={true}>
             <Card sx={{ width: 300 }} elevation={0}>
                 <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
+                    <Typography gutterBottom variant="h6" component="div">
                         {emoji} {name} - ({code})
                     </Typography>
                     <Divider />
@@ -62,18 +65,21 @@ const PopupContainer = ({ data: { emoji, name, code, capital, currency, phone, a
                                     <TranslateIcon />
                                 </Avatar>
                             </ListItemAvatar>
-                            <ListItemText primary='Oficial languages' />
+                            <Box sx={{ display: 'grid', my: 1 }}>
+                                <Typography variant="caption" sx={{ color: 'gray', pb: 0.5 }}>Official Languages</Typography>
+                                <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap" sx={{ overflowX: 'scroll' }}>
+                                    {languages.map(lang => (
+                                        <Chip 
+                                            key={lang.name} 
+                                            label={lang.name} 
+                                            size={'small'} 
+                                            color="primary"
+                                            variant="outlined" 
+                                        />
+                                    ))}
+                                </Stack>
+                            </Box>
                         </ListItem>
-                        <Stack direction="row" spacing={1} sx={{ my: 1, pl: 6, overflowX: 'scroll' }}>
-                            {languages.map(lang => (
-                                <Chip 
-                                    key={lang.name} 
-                                    label={lang.name} 
-                                    size={'small'} 
-                                    variant="outlined" 
-                                />
-                            ))}
-                        </Stack>
                     </List>
                 </CardContent>
                 <Divider />
@@ -90,13 +96,16 @@ const PopupContainer = ({ data: { emoji, name, code, capital, currency, phone, a
 const DataComponent = (data: DataList[]) => {
     return data.map(({ label, value, icon }) => {
         return (
-            <ListItem key={value} sx={{ p: 0 }}>
+            <ListItem key={value} sx={{ p: 0 }} dense>
                 <ListItemAvatar>
                     <Avatar>
                         {icon}
                     </Avatar>
                 </ListItemAvatar>
-                <ListItemText sx={{ p: 0 }} primary={label} secondary={value} />
+                <Box sx={{ display: 'grid', my: 1 }}>
+                    <Typography variant="caption" sx={{ color: 'gray' }}>{label}</Typography>
+                    <Typography variant="body1" sx={{ m: '0 !important' }}>{value}</Typography>
+                </Box>
             </ListItem>
         )
     })
